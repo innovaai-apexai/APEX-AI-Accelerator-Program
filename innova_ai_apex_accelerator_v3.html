@@ -1,0 +1,972 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f0e0d;--ink2:#3a3835;--ink3:#7a776f;
+  --cream:#faf8f4;--cream2:#f2efe8;--cream3:#e8e4d8;
+  --gold:#b8933e;--gold2:#d4ac58;--gold3:#f0cc7a;
+  --teal:#1a6b5c;--teal2:#2a8f78;--teal3:#3db89b;
+  --navy:#0d2240;--navy2:#1a3a6b;--navy3:#2952a3;
+  --coral:#c4412a;--coral2:#e05a3a;--coral3:#f07a5a;
+  --purple:#4a2880;--purple2:#6b3db8;--purple3:#9060e0;
+  --r:8px;--r2:14px;--r3:20px;
+}
+
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--ink);line-height:1.6}
+
+.wrapper{max-width:860px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+.hero{text-align:center;padding:3rem 1rem 2rem;border-bottom:1px solid var(--cream3);margin-bottom:2.5rem;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(184,147,62,0.08) 0%,transparent 70%);pointer-events:none}
+.org-tag{font-family:'Syne',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);background:rgba(184,147,62,0.1);border:1px solid rgba(184,147,62,0.25);padding:4px 14px;border-radius:40px;display:inline-block;margin-bottom:1.2rem}
+.hero-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:800;line-height:1.1;color:var(--navy);margin-bottom:.5rem;letter-spacing:-0.02em}
+.hero-title span{color:var(--gold)}
+.hero-sub{font-size:1.05rem;color:var(--ink2);max-width:540px;margin:0 auto 1.5rem;font-weight:300;font-style:italic}
+.hero-pills{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-top:1rem}
+.pill{font-size:12px;font-weight:500;padding:4px 12px;border-radius:40px;border:1px solid}
+.pill-teal{color:var(--teal);border-color:rgba(26,107,92,0.3);background:rgba(26,107,92,0.06)}
+.pill-navy{color:var(--navy2);border-color:rgba(26,58,107,0.3);background:rgba(26,58,107,0.06)}
+.pill-gold{color:var(--gold);border-color:rgba(184,147,62,0.3);background:rgba(184,147,62,0.06)}
+
+.section-label{font-family:'Syne',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:1.2rem;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--cream3)}
+
+.section{margin-bottom:3rem}
+
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem}
+.tier{background:#fff;border:1px solid var(--cream3);border-radius:var(--r2);padding:1.25rem;cursor:pointer;transition:border-color .2s,transform .15s;position:relative;overflow:hidden}
+.tier:hover{transform:translateY(-2px)}
+.tier.active{border-color:var(--active-color, var(--gold))}
+.tier::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--active-color,var(--cream3));opacity:.7}
+.tier.active::before{opacity:1}
+.tier-badge{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:.7rem}
+.tier-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.2rem;color:var(--ink)}
+.tier-price{font-size:1.5rem;font-weight:600;color:var(--ink);line-height:1}
+.tier-price sup{font-size:.75rem;font-weight:400;vertical-align:super}
+.tier-price .mo{font-size:.75rem;font-weight:400;color:var(--ink3)}
+.tier-weeks{font-size:12px;color:var(--ink3);margin-top:.3rem}
+.popular-tag{position:absolute;top:10px;right:10px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--gold);color:#fff;padding:2px 8px;border-radius:4px}
+
+.detail-panel{background:#fff;border:1px solid var(--cream3);border-radius:var(--r3);padding:2rem;display:none}
+.detail-panel.active{display:block}
+
+.dp-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.dp-name{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--ink)}
+.dp-price-block{text-align:right}
+.dp-price{font-size:2rem;font-weight:700;line-height:1}
+.dp-meta{font-size:13px;color:var(--ink3)}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.info-block{background:var(--cream2);border-radius:var(--r);padding:1rem 1.1rem}
+.info-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:.4rem}
+.info-val{font-size:.95rem;font-weight:500;color:var(--ink)}
+
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1rem}
+.feat{display:flex;align-items:flex-start;gap:8px;font-size:.88rem;color:var(--ink2)}
+.feat-dot{width:6px;height:6px;border-radius:50%;background:var(--dot-color,var(--gold));margin-top:5px;flex-shrink:0}
+
+.week-plan{margin-top:1.2rem}
+.week-row{display:grid;grid-template-columns:90px 1fr;gap:.75rem;align-items:start;margin-bottom:.75rem}
+.week-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;padding-top:3px}
+.week-items{display:flex;flex-wrap:wrap;gap:.4rem}
+.session-tag{font-size:12px;padding:3px 10px;border-radius:40px;border:1px solid;font-weight:500}
+
+.curriculum{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem;margin-top:.5rem}
+.mod{background:var(--cream2);border-radius:var(--r);padding:.9rem 1rem;border-left:3px solid var(--mod-color,var(--teal))}
+.mod-title{font-size:.88rem;font-weight:600;color:var(--ink);margin-bottom:.3rem}
+.mod-tools{font-size:.78rem;color:var(--ink3)}
+
+.projects-block{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.5rem}
+.proj-card{background:var(--cream);border:1px solid var(--cream3);border-radius:var(--r);padding:.9rem 1rem}
+.proj-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--cream3);line-height:1;margin-bottom:.25rem}
+.proj-desc{font-size:.85rem;color:var(--ink2)}
+
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.tab{font-size:13px;padding:5px 14px;border-radius:var(--r);border:1px solid var(--cream3);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--ink2);transition:all .15s}
+.tab:hover,.tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.cta-bar{background:var(--navy);color:#fff;border-radius:var(--r2);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:2rem}
+.cta-text{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700}
+.cta-sub{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:.2rem}
+.cta-btn{background:var(--gold);color:var(--navy);font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;padding:.7rem 1.6rem;border-radius:var(--r);border:none;cursor:pointer;white-space:nowrap}
+
+.diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem}
+.diff-item{background:#fff;border:1px solid var(--cream3);border-radius:var(--r);padding:1rem;text-align:center}
+.diff-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .6rem;font-size:16px}
+.diff-title{font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:.2rem}
+.diff-sub{font-size:.78rem;color:var(--ink3)}
+
+.domains{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+.domain-pill{font-size:12px;font-weight:500;padding:4px 12px;border-radius:40px;border:1px solid var(--cream3);background:var(--cream2);color:var(--ink2)}
+
+/* ── Why InNova AI Is Different ── */
+.compare-headline{font-family:'Syne',sans-serif;font-size:clamp(1.25rem,3.5vw,1.85rem);font-weight:800;color:var(--navy);line-height:1.2;letter-spacing:-0.02em;text-align:center;margin-bottom:2rem}
+.compare-headline span{color:var(--gold)}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;border-radius:var(--r3);overflow:hidden;border:1px solid var(--cream3);box-shadow:0 4px 24px rgba(13,34,64,0.07)}
+
+.compare-col{padding:1.75rem 1.5rem}
+.compare-col--left{background:#fff;position:relative}
+.compare-col--left::after{content:'vs';position:absolute;top:50%;right:-18px;transform:translateY(-50%);font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--ink3);background:var(--cream2);border:1px solid var(--cream3);border-radius:40px;padding:4px 8px;z-index:2}
+.compare-col--right{background:var(--navy);position:relative;overflow:hidden}
+.compare-col--right::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 90% 10%,rgba(184,147,62,0.12) 0%,transparent 65%);pointer-events:none}
+
+.compare-col-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid}
+.compare-col--left .compare-col-header{border-color:var(--cream3)}
+.compare-col--right .compare-col-header{border-color:rgba(255,255,255,.12)}
+
+.compare-col-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.compare-col-icon--left{background:rgba(196,65,42,.1);color:var(--coral)}
+.compare-col-icon--right{background:rgba(184,147,62,.18);color:var(--gold3)}
+
+.compare-col-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:-.01em}
+.compare-col--left .compare-col-title{color:var(--ink2)}
+.compare-col--right .compare-col-title{color:#fff}
+
+.compare-list{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+.compare-list li{display:flex;align-items:flex-start;gap:.6rem;font-size:.84rem;line-height:1.5}
+.compare-list--left li{color:var(--ink3)}
+.compare-list--right li{color:rgba(255,255,255,.85)}
+
+.compare-item-icon{flex-shrink:0;font-size:8px;margin-top:5px}
+.compare-list--left .compare-item-icon{color:var(--coral2);opacity:.6}
+.compare-list--right .compare-item-icon{color:var(--gold2)}
+
+@media(max-width:600px){
+  .compare-grid{grid-template-columns:1fr}
+  .compare-col--left::after{display:none}
+  .compare-col--right{border-radius:0 0 var(--r3) var(--r3)}
+}
+
+/* ── FAQ Accordion ── */
+.faq-list{display:flex;flex-direction:column;gap:.5rem}
+
+.faq-item{background:#fff;border:1px solid var(--cream3);border-radius:var(--r2);overflow:hidden;transition:border-color .2s}
+.faq-item.open{border-color:var(--gold);box-shadow:0 2px 12px rgba(184,147,62,0.08)}
+
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.2rem;background:none;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--ink);text-align:left;transition:color .15s}
+.faq-item.open .faq-q{color:var(--navy)}
+
+.faq-chevron{font-size:1.3rem;font-weight:300;color:var(--ink3);transition:transform .25s ease,color .15s;flex-shrink:0;line-height:1}
+.faq-item.open .faq-chevron{transform:rotate(90deg);color:var(--gold)}
+
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .25s ease;font-size:.875rem;color:var(--ink2);line-height:1.7;padding:0 1.2rem}
+.faq-item.open .faq-a{max-height:200px;padding:.1rem 1.2rem 1rem}
+
+/* ── Scholarships & Financial Aid ── */
+.scholarship-intro{background:linear-gradient(135deg,rgba(13,34,64,0.04) 0%,rgba(184,147,62,0.07) 100%);border:1px solid rgba(184,147,62,0.2);border-radius:var(--r2);padding:1.4rem 1.6rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.scholarship-intro::before{content:'🎓';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:2.8rem;opacity:0.12;pointer-events:none}
+.scholarship-intro p{font-size:.92rem;color:var(--ink2);line-height:1.75;font-weight:300}
+
+.scholarship-subsection{margin-bottom:2rem}
+.scholarship-subsection-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--navy);letter-spacing:-0.01em;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.scholarship-subsection-title::before{content:'';width:4px;height:18px;border-radius:4px;flex-shrink:0}
+.scholarship-subsection-title.undergrad::before{background:var(--teal2)}
+.scholarship-subsection-title.grad::before{background:var(--navy2)}
+
+.scholarship-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.85rem;margin-bottom:1.1rem}
+
+.scholarship-card{background:#fff;border:1px solid var(--cream3);border-radius:var(--r2);padding:1.2rem 1.25rem;position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.scholarship-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(13,34,64,0.08)}
+.scholarship-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.scholarship-card.teal::after{background:linear-gradient(90deg,var(--teal2),var(--teal3))}
+.scholarship-card.navy::after{background:linear-gradient(90deg,var(--navy2),var(--navy3))}
+.scholarship-card.gold::after{background:linear-gradient(90deg,var(--gold),var(--gold3))}
+.scholarship-card.purple::after{background:linear-gradient(90deg,var(--purple2),var(--purple3))}
+
+.schol-badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:40px;display:inline-block;margin-bottom:.7rem}
+.schol-badge.teal{background:rgba(42,143,120,.1);color:var(--teal)}
+.schol-badge.navy{background:rgba(26,58,107,.1);color:var(--navy2)}
+.schol-badge.gold{background:rgba(184,147,62,.12);color:#8a6a1a}
+.schol-badge.purple{background:rgba(107,61,184,.1);color:var(--purple2)}
+
+.schol-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:.55rem;line-height:1.3}
+
+.schol-price-row{display:flex;align-items:center;gap:.55rem;margin-bottom:.25rem}
+.schol-original{font-size:1.15rem;font-weight:400;color:var(--ink3);text-decoration:line-through}
+.schol-arrow{font-size:.8rem;color:var(--ink3)}
+.schol-discounted{font-size:1.45rem;font-weight:700;line-height:1}
+.schol-discounted.teal{color:var(--teal)}
+.schol-discounted.navy{color:var(--navy2)}
+.schol-discounted.gold{color:var(--gold)}
+.schol-discounted.purple{color:var(--purple2)}
+
+.schol-reduction{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:4px;display:inline-block;margin-top:.35rem}
+.schol-reduction.teal{background:rgba(42,143,120,.1);color:var(--teal)}
+.schol-reduction.navy{background:rgba(26,58,107,.1);color:var(--navy2)}
+.schol-reduction.gold{background:rgba(184,147,62,.12);color:#8a6a1a}
+.schol-reduction.purple{background:rgba(107,61,184,.1);color:var(--purple2)}
+
+.schol-eligibility{background:var(--cream2);border-radius:var(--r);padding:.95rem 1rem;margin-top:.5rem}
+.schol-elig-title{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.55rem}
+.schol-elig-list{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.schol-elig-list li{font-size:.8rem;color:var(--ink2);display:flex;align-items:flex-start;gap:.5rem;line-height:1.5}
+.schol-elig-list li::before{content:'◆';font-size:6px;color:var(--gold);margin-top:5px;flex-shrink:0}
+
+.merit-block{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);border-radius:var(--r2);padding:1.4rem 1.6rem;margin:1.5rem 0;position:relative;overflow:hidden}
+.merit-block::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 100% 0%,rgba(184,147,62,0.18) 0%,transparent 65%);pointer-events:none}
+.merit-block-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold2);margin-bottom:.5rem}
+.merit-block-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:.5rem}
+.merit-block-text{font-size:.865rem;color:rgba(255,255,255,.78);line-height:1.55;font-weight:300}
+.merit-percent{font-family:'Syne',sans-serif;font-size:2.0rem;font-weight:800;color:var(--gold3);line-height:1;position:absolute;right:1.6rem;top:30%;transform:translateY(-50%);opacity:.9}
+
+.schol-note{background:rgba(26,107,92,0.05);border:1px solid rgba(26,107,92,0.18);border-left:3px solid var(--teal2);border-radius:var(--r);padding:1rem 1.2rem;margin-top:1rem}
+.schol-note-title{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:.45rem}
+.schol-note-text{font-size:.855rem;color:var(--ink2);line-height:1.7}
+
+@media(max-width:600px){
+  .schol-price-row{flex-wrap:wrap}
+  .merit-percent{display:none}
+}
+
+/* ── Watermark ── */
+.hero-watermark{
+  display:block;
+  font-family:'Syne',sans-serif;
+  font-size:clamp(.7rem,1.8vw,.95rem);
+  font-weight:400;
+  letter-spacing:.42em;
+  text-transform:uppercase;
+  color:var(--gold);
+  opacity:.68;
+  margin-top:.55rem;
+  margin-bottom:.1rem;
+  user-select:none;
+  pointer-events:none;
+}
+
+/* ── Action tabs (Enroll / Contact) ── */
+.tab-enroll{
+  background:var(--gold)!important;
+  color:var(--navy)!important;
+  border-color:var(--gold)!important;
+  font-weight:600!important;
+}
+.tab-enroll:hover{background:var(--gold2)!important;border-color:var(--gold2)!important}
+.tab-contact{
+  background:transparent!important;
+  color:var(--navy)!important;
+  border-color:var(--navy)!important;
+  font-weight:600!important;
+}
+.tab-contact:hover{background:var(--navy)!important;color:#fff!important}
+.tab-divider{width:1px;height:20px;background:var(--cream3);align-self:center;flex-shrink:0}
+
+/* ── Top Navigation Bar ── */
+.site-nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(250,248,244,0.97);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--cream3);
+  padding:0 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;
+  min-height:52px;
+}
+.site-nav-brand{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:800;
+  letter-spacing:.14em;color:var(--navy);text-transform:uppercase;
+  white-space:nowrap;flex-shrink:0;
+}
+.site-nav-brand span{color:var(--gold)}
+.site-nav-links{
+  display:flex;align-items:center;gap:.25rem;flex-wrap:wrap;
+}
+.site-nav-link{
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.38rem .9rem;border-radius:var(--r);
+  border:1px solid transparent;
+  cursor:pointer;text-decoration:none;
+  color:var(--ink2);background:transparent;
+  transition:all .15s;white-space:nowrap;
+}
+.site-nav-link:hover{color:var(--navy);background:var(--cream2);border-color:var(--cream3)}
+.site-nav-link.active{color:var(--navy);background:var(--cream2);border-color:var(--cream3)}
+.site-nav-sep{width:1px;height:16px;background:var(--cream3);flex-shrink:0;margin:0 .2rem}
+.site-nav-link-enroll{
+  background:var(--gold)!important;color:var(--navy)!important;
+  border-color:var(--gold)!important;font-weight:700!important;
+}
+.site-nav-link-enroll:hover{background:var(--gold2)!important;border-color:var(--gold2)!important}
+.site-nav-link-contact{
+  background:transparent!important;color:var(--navy)!important;
+  border-color:var(--cream3)!important;
+}
+.site-nav-link-contact:hover{background:var(--navy)!important;color:#fff!important;border-color:var(--navy)!important}
+
+@media(max-width:620px){
+  .site-nav-brand{font-size:10px}
+  .site-nav-link{font-size:10px;padding:.3rem .6rem}
+}
+</style>
+
+<nav class="site-nav" id="siteNav">
+  <div class="site-nav-brand">InNova <span>AI</span></div>
+  <div class="site-nav-links">
+    <a class="site-nav-link active" onclick="navTo('homeSection',this)">Home</a>
+    <a class="site-nav-link" onclick="navTo('programsSection',this)">Programs</a>
+    <a class="site-nav-link" onclick="navTo('scholarshipSection',this)">Scholarships</a>
+    <a class="site-nav-link" onclick="navTo('faqSection',this)">FAQ</a>
+    <a class="site-nav-link" onclick="navTo('differentiatorSection',this)">About</a>
+    <div class="site-nav-sep"></div>
+    <a class="site-nav-link site-nav-link-enroll" href="https://forms.gle/AqbB7Tyf6mB9zvAu6" target="_blank" rel="noopener">Enroll ↗</a>
+    <a class="site-nav-link site-nav-link-contact" href="https://forms.gle/4SmtgjqPDwZg7EAG8" target="_blank" rel="noopener">Contact ↗</a>
+  </div>
+</nav>
+
+<div class="wrapper">
+  <div class="hero" id="homeSection">
+    <div class="org-tag">InNova AI · Program Details Bundle 2026</div>
+    <div class="hero-title">Apex AI<br><span>Accelerator</span></div>
+    <span class="hero-watermark">Vanya Sahi</span>
+    <div class="hero-sub">A career-transforming AI upskilling system built for the professionals who will shape the next decade of industry.</div>
+    <div class="hero-pills">
+      <span class="pill pill-teal">Virtual · Global Cohorts</span>
+      <span class="pill pill-navy">Live + Async + Labs</span>
+      <span class="pill pill-gold">Certified · Career-Ready</span>
+      <span class="pill pill-teal">4–16 Weeks</span>
+      <span class="pill pill-navy">$499 – $4,999</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Industries served</div>
+    <div class="domains">
+      <span class="domain-pill">Cybersecurity</span>
+      <span class="domain-pill">Healthcare</span>
+      <span class="domain-pill">Finance</span>
+      <span class="domain-pill">Law</span>
+      <span class="domain-pill">Energy</span>
+      <span class="domain-pill">Psychology & Behavioral Science</span>
+      <span class="domain-pill">Operations & Consulting</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Differentiators</div>
+    <div class="diff-grid">
+      <div class="diff-item">
+        <div class="diff-icon" style="background:rgba(26,107,92,.1);color:var(--teal)">◈</div>
+        <div class="diff-title">Agentic AI Focus</div>
+        <div class="diff-sub">Build autonomous AI systems, not just use AI tools</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-icon" style="background:rgba(184,147,62,.1);color:var(--gold)">◉</div>
+        <div class="diff-title">Domain-Driven</div>
+        <div class="diff-sub">Projects tied to your industry from day one</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-icon" style="background:rgba(13,34,64,.1);color:var(--navy)">⬡</div>
+        <div class="diff-title">Expert Mentorship</div>
+        <div class="diff-sub">Weekly 1:1 and group guidance from practitioners</div>
+      </div>
+      <div class="diff-item">
+        <div class="diff-icon" style="background:rgba(196,65,42,.1);color:var(--coral)">★</div>
+        <div class="diff-title">Real Capstones</div>
+        <div class="diff-sub">Ship a functional AI product, not a slide deck</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="programsSection">
+    <div class="section-label">Choose a package to explore</div>
+    <div class="tiers" id="tierGrid">
+      <div class="tier" style="--active-color:#5b8c5a" data-tier="0" onclick="selectTier(0)">
+        <span class="tier-badge" style="background:rgba(91,140,90,.12);color:#3a6b39">Tier 01</span>
+        <div class="tier-name">Spark</div>
+        <div class="tier-price"><sup>$</sup>499</div>
+        <div class="tier-weeks">4 weeks · Foundational</div>
+      </div>
+      <div class="tier" style="--active-color:#2952a3" data-tier="1" onclick="selectTier(1)">
+        <span class="tier-badge" style="background:rgba(41,82,163,.12);color:#1a3a6b">Tier 02</span>
+        <div class="tier-name">Forge</div>
+        <div class="tier-price"><sup>$</sup>1,299</div>
+        <div class="tier-weeks">8 weeks · Professional</div>
+        <div class="popular-tag">Most Popular</div>
+      </div>
+      <div class="tier" style="--active-color:#b8933e" data-tier="2" onclick="selectTier(2)">
+        <span class="tier-badge" style="background:rgba(184,147,62,.12);color:#8a6a1a">Tier 03</span>
+        <div class="tier-name">Apex</div>
+        <div class="tier-price"><sup>$</sup>2,799</div>
+        <div class="tier-weeks">12 weeks · Advanced</div>
+      </div>
+      <div class="tier" style="--active-color:#4a2880" data-tier="3" onclick="selectTier(3)">
+        <span class="tier-badge" style="background:rgba(74,40,128,.12);color:#3a1870">Tier 04</span>
+        <div class="tier-name">Vanguard</div>
+        <div class="tier-price"><sup>$</sup>4,999</div>
+        <div class="tier-weeks">16 weeks · Executive</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="detailArea"></div>
+
+  <div class="section" id="curriculumSection">
+    <div class="section-label">Core curriculum modules — all tiers</div>
+    <div class="tabs" id="curriculumTabs">
+      <button class="tab active" onclick="showCurriculum('foundations')">Foundations</button>
+      <button class="tab" onclick="showCurriculum('applied')">Applied AI</button>
+      <button class="tab" onclick="showCurriculum('agentic')">Agentic Systems</button>
+      <button class="tab" onclick="showCurriculum('security')">AI Security</button>
+      <button class="tab" onclick="showCurriculum('strategy')">AI Strategy</button>
+      <div class="tab-divider"></div>
+      <a class="tab tab-enroll" href="https://forms.gle/AqbB7Tyf6mB9zvAu6" target="_blank" rel="noopener" style="text-decoration:none">Enroll ↗</a>
+      <a class="tab tab-contact" href="https://forms.gle/4SmtgjqPDwZg7EAG8" target="_blank" rel="noopener" style="text-decoration:none">Contact Us ↗</a>
+    </div>
+    <div id="curriculumContent"></div>
+  </div>
+
+  <div class="section" id="differentiatorSection">
+    <div class="section-label">Why InNova AI Is Different</div>
+    <div class="compare-headline">Move beyond learning AI.<br><span>Learn to implement, automate, and lead with AI.</span></div>
+    <div class="compare-grid">
+      <div class="compare-col compare-col--left">
+        <div class="compare-col-header">
+          <div class="compare-col-icon compare-col-icon--left">✕</div>
+          <div class="compare-col-title">Typical AI Courses</div>
+        </div>
+        <ul class="compare-list compare-list--left">
+          <li><span class="compare-item-icon">▸</span>Prerecorded video lessons with no live interaction</li>
+          <li><span class="compare-item-icon">▸</span>Generic prompt engineering with no domain context</li>
+          <li><span class="compare-item-icon">▸</span>Isolated tool demonstrations, disconnected from real work</li>
+          <li><span class="compare-item-icon">▸</span>Limited or no mentorship access</li>
+          <li><span class="compare-item-icon">▸</span>Standardized completion certificates</li>
+          <li><span class="compare-item-icon">▸</span>Little to no portfolio support</li>
+          <li><span class="compare-item-icon">▸</span>No implementation coaching or accountability</li>
+          <li><span class="compare-item-icon">▸</span>Minimal personalization across cohorts</li>
+        </ul>
+      </div>
+      <div class="compare-col compare-col--right">
+        <div class="compare-col-header">
+          <div class="compare-col-icon compare-col-icon--right">✦</div>
+          <div class="compare-col-title">The InNova AI Experience</div>
+        </div>
+        <ul class="compare-list compare-list--right">
+          <li><span class="compare-item-icon">◆</span>Live expert-led workshops with real-time feedback</li>
+          <li><span class="compare-item-icon">◆</span>Personalized mentorship calibrated to your role and goals</li>
+          <li><span class="compare-item-icon">◆</span>Real workflow automation projects tied to your industry</li>
+          <li><span class="compare-item-icon">◆</span>Agentic AI system design and deployment</li>
+          <li><span class="compare-item-icon">◆</span>Domain-specific implementation support throughout</li>
+          <li><span class="compare-item-icon">◆</span>Portfolio-grade capstone projects reviewed by practitioners</li>
+          <li><span class="compare-item-icon">◆</span>LinkedIn digital credential badges, verified and shareable</li>
+          <li><span class="compare-item-icon">◆</span>Individualized letters of recommendation</li>
+          <li><span class="compare-item-icon">◆</span>AI readiness assessments with personalized action plans</li>
+          <li><span class="compare-item-icon">◆</span>Executive strategy and consulting pathways for leaders</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="faqSection">
+    <div class="section-label">Frequently Asked Questions</div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span>Do I need technical or coding experience?</span>
+          <span class="faq-chevron">›</span>
+        </button>
+        <div class="faq-a">Foundational Spark requires no technical background. Professional Forge benefits from basic digital fluency. Advanced Apex is best for those with some AI or automation experience. Executive Vanguard focuses on strategic leadership rather than coding.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span>What AI tools and platforms will I learn?</span>
+          <span class="faq-chevron">›</span>
+        </button>
+        <div class="faq-a">Participants use tools such as ChatGPT, Claude, Gemini, Microsoft Copilot, Zapier, n8n, Make, Notion AI, Airtable AI, LangChain, CrewAI, and enterprise AI platforms depending on package level.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span>Will I receive a certificate?</span>
+          <span class="faq-chevron">›</span>
+        </button>
+        <div class="faq-a">Yes. Every participant receives an InNova AI Certificate of Accomplishment upon successful completion of the capstone project.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span>Will I receive a LinkedIn credential?</span>
+          <span class="faq-chevron">›</span>
+        </button>
+        <div class="faq-a">Yes. Participants also receive a LinkedIn digital badge to showcase their achievement publicly.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span>Will I receive a recommendation letter?</span>
+          <span class="faq-chevron">›</span>
+        </button>
+        <div class="faq-a">Yes. Each participant receives an individualized professional letter of recommendation.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span>Will I build real projects?</span>
+          <span class="faq-chevron">›</span>
+        </button>
+        <div class="faq-a">Yes. Every package includes hands-on projects and a portfolio-ready capstone reviewed by experienced practitioners.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span>How will this help my career?</span>
+          <span class="faq-chevron">›</span>
+        </button>
+        <div class="faq-a">Programs strengthen resumes, improve LinkedIn visibility, build professional portfolios, and demonstrate practical AI readiness for hiring, promotion, consulting, and leadership opportunities.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          <span>How is InNova AI different from cheaper online courses?</span>
+          <span class="faq-chevron">›</span>
+        </button>
+        <div class="faq-a">Unlike passive online courses, InNova AI emphasizes live mentorship, implementation coaching, workflow automation, agentic AI design, and career-ready project outcomes.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Scholarships & Financial Aid ── -->
+  <div class="section" id="scholarshipSection">
+    <div class="section-label">Scholarships &amp; Financial Aid</div>
+
+    <div class="scholarship-intro">
+      <p>InNova AI believes access to transformative AI education should not be limited by financial barriers. Through our <strong>Student Advancement Scholarship Program</strong>, eligible undergraduate and graduate students may receive partial tuition support for select workshop packages.</p>
+    </div>
+
+    <!-- Undergraduate Scholarships -->
+    <div class="scholarship-subsection">
+      <div class="scholarship-subsection-title undergrad">Undergraduate Scholarships</div>
+      <div class="scholarship-cards">
+
+        <div class="scholarship-card teal">
+          <span class="schol-badge teal">Undergrad · Tier 01</span>
+          <div class="schol-name">Foundational Spark Scholarship</div>
+          <div class="schol-price-row">
+            <span class="schol-original">$499</span>
+            <span class="schol-arrow">→</span>
+            <span class="schol-discounted teal">$349</span>
+          </div>
+          <span class="schol-reduction teal">30% tuition reduction</span>
+        </div>
+
+        <div class="scholarship-card navy">
+          <span class="schol-badge navy">Undergrad · Tier 02</span>
+          <div class="schol-name">Professional Forge Scholarship</div>
+          <div class="schol-price-row">
+            <span class="schol-original">$1,299</span>
+            <span class="schol-arrow">→</span>
+            <span class="schol-discounted navy">$1,039</span>
+          </div>
+          <span class="schol-reduction navy">20% tuition reduction</span>
+        </div>
+
+      </div>
+
+      <div class="schol-eligibility">
+        <div class="schol-elig-title">Undergraduate Eligibility Requirements</div>
+        <ul class="schol-elig-list">
+          <li>Proof of current undergraduate enrollment</li>
+          <li>Valid student identification</li>
+          <li>Resume or LinkedIn profile</li>
+          <li>Short scholarship statement</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Graduate Scholarships -->
+    <div class="scholarship-subsection">
+      <div class="scholarship-subsection-title grad">Graduate Scholarships</div>
+      <div class="scholarship-cards">
+
+        <div class="scholarship-card navy">
+          <span class="schol-badge navy">Graduate · Tier 02</span>
+          <div class="schol-name">Professional Forge Scholarship</div>
+          <div class="schol-price-row">
+            <span class="schol-original">$1,299</span>
+            <span class="schol-arrow">→</span>
+            <span class="schol-discounted navy">$974</span>
+          </div>
+          <span class="schol-reduction navy">25% tuition reduction</span>
+        </div>
+
+        <div class="scholarship-card gold">
+          <span class="schol-badge gold">Graduate · Tier 03</span>
+          <div class="schol-name">Advanced Apex Scholarship</div>
+          <div class="schol-price-row">
+            <span class="schol-original">$2,799</span>
+            <span class="schol-arrow">→</span>
+            <span class="schol-discounted gold">$2,239</span>
+          </div>
+          <span class="schol-reduction gold">20% tuition reduction</span>
+        </div>
+
+        <div class="scholarship-card purple">
+          <span class="schol-badge purple">Graduate · Tier 04</span>
+          <div class="schol-name">Executive Vanguard Academic Fellowship</div>
+          <div class="schol-price-row">
+            <span class="schol-original">$4,999</span>
+            <span class="schol-arrow">→</span>
+            <span class="schol-discounted purple">$4,249</span>
+          </div>
+          <span class="schol-reduction purple">15% tuition reduction</span>
+        </div>
+
+      </div>
+
+      <div class="schol-eligibility">
+        <div class="schol-elig-title">Graduate Eligibility Requirements</div>
+        <ul class="schol-elig-list">
+          <li>Proof of graduate enrollment</li>
+          <li>Valid student identification</li>
+          <li>Resume or LinkedIn profile</li>
+          <li>Short statement of intended AI impact</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Merit Enhancement Block -->
+    <div class="merit-block">
+      <div class="merit-block-label">Additional Merit Award</div>
+      <div class="merit-block-title">Merit-Based Scholarship Enhancement</div>
+      <div class="merit-block-text">Outstanding applicants may qualify for an additional 5% merit award based on academic achievement, innovation, leadership, or demonstrated AI initiative.</div>
+      <div class="merit-percent">+5%</div>
+    </div>
+
+    <!-- Final Recipient Note -->
+    <div class="schol-note">
+      <div class="schol-note-title">Full Program Benefits for Scholarship Recipients</div>
+      <div class="schol-note-text">Scholarship recipients receive <strong>full program benefits</strong> including mentorship, capstone support, certificate of accomplishment, LinkedIn badge, recommendation letter, and career portfolio development support.</div>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <div>
+      <div class="cta-text">Ready to transform your AI capabilities?</div>
+      <div class="cta-sub">Join the next InNova AI Accelerator cohort · Rolling admissions</div>
+    </div>
+    <button class="cta-btn" onclick="sendPrompt('Tell me more about enrolling in the InNova AI Apex Accelerator program')">Explore enrollment ↗</button>
+  </div>
+</div>
+
+<script>
+const tiers=[
+  {
+    id:0,name:"Spark",color:"#5b8c5a",dot:"#5b8c5a",badge:"Foundational",price:"$499",
+    audience:"Students, early-career professionals, career changers exploring AI",
+    duration:"4 weeks",sessionsPerWeek:"2",totalSessions:8,
+    desc:"A high-impact introduction to real-world AI that equips participants with foundational fluency and hands-on experience with the most impactful AI tools in use today. Ideal for professionals who want to confidently navigate an AI-transformed workplace.",
+    features:["8 live sessions (90 min each)","Concept + demo-style delivery","2 hands-on lab sessions","Guided group project","Access to async learning vault","InNova AI Digital Certificate","Private community access (3 months)","Weekly Q&A office hours"],
+    weekPlan:[
+      {label:"Wk 1–2",items:[{t:"Concept Session",c:"#2952a3"},{t:"Concept Session",c:"#2952a3"},{t:"Live Demo Lab",c:"#3a6b39"},{t:"Office Hours",c:"#8a6a1a"}]},
+      {label:"Wk 3–4",items:[{t:"Applied Lab",c:"#3a6b39"},{t:"Applied Lab",c:"#3a6b39"},{t:"Group Project",c:"#7a3090"},{t:"Office Hours",c:"#8a6a1a"}]}
+    ],
+    projects:[
+      {n:"01",d:"AI Productivity Makeover — automate 3 real workflows using no-code AI tools"},
+      {n:"02",d:"Domain Snapshot — map AI opportunities in your own industry"}
+    ],
+    mentorship:"Group office hours (2×/week live), async Q&A in community channel",
+    aiServices:[
+      "AI workflow audit (entry-level) — identify 3 high-impact automation opportunities",
+      "AI readiness self-assessment — structured reflection on current tool usage",
+      "Personal AI copilot setup — configure ChatGPT, Claude, or Copilot for daily work",
+      "Workflow automation coaching — guided Zapier/Make setup for one real workflow"
+    ],
+    techRequired:"No technical experience required. If you can use a smartphone and email, you are fully prepared. This program is designed to build confidence from zero.",
+    tools:["ChatGPT","Claude","Gemini","Microsoft Copilot","Notion AI","Canva Magic Studio","Zapier","Make","Airtable AI"],
+    credentials:["InNova AI Certificate of Accomplishment","LinkedIn digital badge","Individualized letter of recommendation","Completed capstone project artifact"],
+    careerImpact:"Completion demonstrates AI literacy and adaptability — qualities that differentiate candidates on any resume. Participants gain a verifiable credential, a polished LinkedIn profile enhancement, and a concrete portfolio piece proving hands-on AI capability in their domain."
+  },
+  {
+    id:1,name:"Forge",color:"#2952a3",dot:"#2952a3",badge:"Professional",price:"$1,299",
+    audience:"Mid-level professionals, managers, domain experts seeking applied AI skills",
+    duration:"8 weeks",sessionsPerWeek:"3",totalSessions:24,
+    desc:"A structured, project-driven program where participants gain deep working knowledge of AI tools, workflows, and domain-specific applications. Participants leave with a portfolio project and a clear personal AI implementation roadmap.",
+    features:["24 live sessions across 8 weeks","Mix of concept, lab, and project sessions","1 group mentorship call per week","Personal AI Readiness Assessment","Domain-specific mini-project (Wk 4)","Portfolio capstone project (Wk 7–8)","InNova AI Professional Certificate","Community access (12 months)","Recorded session library"],
+    weekPlan:[
+      {label:"Wk 1–2",items:[{t:"Concept",c:"#2952a3"},{t:"Concept",c:"#2952a3"},{t:"Lab",c:"#3a6b39"},{t:"Office Hours",c:"#8a6a1a"}]},
+      {label:"Wk 3–4",items:[{t:"Applied Lab",c:"#3a6b39"},{t:"Applied Lab",c:"#3a6b39"},{t:"Domain Project",c:"#7a3090"},{t:"Group Mentor",c:"#8a6a1a"}]},
+      {label:"Wk 5–6",items:[{t:"Agentic AI Lab",c:"#3a6b39"},{t:"Concept",c:"#2952a3"},{t:"Project Build",c:"#7a3090"},{t:"Group Mentor",c:"#8a6a1a"}]},
+      {label:"Wk 7–8",items:[{t:"Capstone Build",c:"#7a3090"},{t:"Capstone Build",c:"#7a3090"},{t:"Capstone Pitch",c:"#7a3090"},{t:"Group Mentor",c:"#8a6a1a"}]}
+    ],
+    projects:[
+      {n:"01",d:"AI Toolkit Build — integrate 3+ AI tools into a live professional workflow"},
+      {n:"02",d:"Domain Mini-Project — AI solution prototype for your specific industry context"},
+      {n:"03",d:"Portfolio Capstone — functional AI-powered product or automation system"}
+    ],
+    mentorship:"Weekly group mentor sessions (60 min), async Slack support, milestone check-ins at Wk 4 & Wk 8",
+    aiServices:[
+      "AI readiness assessment — structured evaluation of your current workflow maturity",
+      "Personal AI copilot setup — tailored configuration for your professional role",
+      "Workflow automation coaching — end-to-end automation of 2+ live processes",
+      "AI workflow audit — identify gaps and high-ROI AI opportunities in your workflow",
+      "Agentic AI introduction — build your first simple autonomous AI task sequence"
+    ],
+    techRequired:"Low to moderate technical experience is helpful but not required. Comfort with digital tools, spreadsheets, or basic software is sufficient. No coding is needed — low-code platforms are the primary environment throughout.",
+    tools:["ChatGPT Pro","Claude Pro","Gemini Advanced","Microsoft Copilot","Zapier","n8n","Make","Perplexity","NotebookLM","OpenAI GPTs","Langflow","Airtable"],
+    credentials:["InNova AI Certificate of Accomplishment","LinkedIn digital badge","Individualized letter of recommendation","Completed capstone project artifact"],
+    careerImpact:"Graduates are positioned as applied AI practitioners within their organizations. The portfolio capstone and professional certificate provide immediate resume and LinkedIn differentiation, support promotion conversations, and build credibility for consulting or advisory roles."
+  },
+  {
+    id:2,name:"Apex",color:"#b8933e",dot:"#b8933e",badge:"Advanced",price:"$2,799",
+    audience:"Senior professionals, team leads, consultants, founders building AI-integrated practices",
+    duration:"12 weeks",sessionsPerWeek:"4",totalSessions:48,
+    desc:"An intensive, mentor-rich program for professionals who need to go beyond usage and into building. Participants design and ship an AI-powered product or system tailored to their domain, guided by senior practitioners and enriched with strategy-level content on governance, agentic AI, and business integration.",
+    features:["48 live sessions across 12 weeks","Intensive mix: concept, lab, strategy, and build","2× weekly group mentorship","3 × 1:1 mentor sessions","Personalized AI Readiness Assessment","Domain-specific capstone project","AI strategy roadmap for your role/org","Peer cohort accountability groups","InNova AI Advanced Certificate","Priority community access (lifetime)","Access to InNova AI case study library"],
+    weekPlan:[
+      {label:"Wk 1–3",items:[{t:"Concept x2",c:"#2952a3"},{t:"Lab x2",c:"#3a6b39"},{t:"Group Mentor",c:"#8a6a1a"}]},
+      {label:"Wk 4–6",items:[{t:"Agentic Labs x2",c:"#3a6b39"},{t:"Strategy Session",c:"#2952a3"},{t:"Domain Project",c:"#7a3090"},{t:"Group Mentor x2",c:"#8a6a1a"},{t:"1:1 Mentor",c:"#b8933e"}]},
+      {label:"Wk 7–9",items:[{t:"Build Sessions x2",c:"#7a3090"},{t:"Security & Governance",c:"#c4412a"},{t:"Group Mentor x2",c:"#8a6a1a"}]},
+      {label:"Wk 10–12",items:[{t:"Capstone Deep Build",c:"#7a3090"},{t:"AI Roadmap Workshop",c:"#2952a3"},{t:"1:1 Mentor x2",c:"#b8933e"},{t:"Peer Review",c:"#3a6b39"},{t:"Capstone Demo Day",c:"#7a3090"}]}
+    ],
+    projects:[
+      {n:"01",d:"AI Workflow Transformation — re-engineer a real organizational process end-to-end"},
+      {n:"02",d:"Agentic System Prototype — autonomous workflow using LLMs + APIs"},
+      {n:"03",d:"Domain Capstone — production-grade AI product aligned to your industry"},
+      {n:"04",d:"AI Strategy Document — personal or org-level AI integration roadmap"}
+    ],
+    mentorship:"2× weekly group mentor calls, 3 structured 1:1 sessions at Wk 3, Wk 7, Wk 12; accountability cohort groups; async Slack with 48-hr response SLA",
+    aiServices:[
+      "Agentic AI system design — architect and deploy multi-step autonomous workflows",
+      "AI workflow audit — comprehensive audit of organizational or team-level AI usage",
+      "AI readiness assessment — full organizational maturity evaluation with scoring",
+      "Workflow automation coaching — advanced automation using n8n, LangChain, and APIs",
+      "AI governance strategy — draft a compliant, ethical AI usage policy for your context",
+      "Personal AI transformation plan — 12-month AI integration roadmap for your role"
+    ],
+    techRequired:"Moderate AI or automation familiarity is recommended. Participants should be comfortable using AI tools regularly and have some experience with no-code or low-code platforms. Exposure to APIs or workflow builders like Zapier or n8n is a strong advantage. No software engineering degree required.",
+    tools:["GPT-5 ecosystem","Claude advanced reasoning","Gemini multimodal","Hugging Face","LangChain","CrewAI","AutoGen","Zapier AI Actions","n8n advanced workflows","Replit","Vercel","Supabase"],
+    credentials:["InNova AI Certificate of Accomplishment","LinkedIn digital badge","Individualized letter of recommendation","Completed capstone project artifact"],
+    careerImpact:"Apex graduates emerge as recognized AI builders and strategists. The advanced certificate, production-grade capstone, and AI roadmap artifact signal readiness for senior roles, team leadership, and consulting engagements — placing graduates among the top tier of AI-capable professionals in their field."
+  },
+  {
+    id:3,name:"Vanguard",color:"#6b3db8",dot:"#6b3db8",badge:"Executive / Elite",price:"$4,999",
+    audience:"C-suite, senior leaders, domain founders, and organizations sponsoring team development",
+    duration:"16 weeks",sessionsPerWeek:"4–5",totalSessions:"60+",
+    desc:"The flagship executive-grade program where participants operate as AI architects and strategists. Designed for leaders who will define AI policy, build AI teams, and launch AI-driven ventures. Includes full consulting-layer access, a personalized AI transformation plan, and a high-stakes capstone with real-world deployment potential.",
+    features:["60+ live and on-demand sessions","Full curriculum: concept + lab + build + strategy + consulting","Unlimited group mentorship access","Personalized AI Transformation Blueprint","Team-level AI deployment consulting (if org-sponsored)","Cross-domain capstone with external reviewer","InNova AI Executive Certificate + LinkedIn verification","Lifetime community access + alumni network","Invitation to InNova AI Innovation Summit","Priority enrollment in future cohorts"],
+    weekPlan:[
+      {label:"Wk 1–4",items:[{t:"Concept x2",c:"#2952a3"},{t:"Lab x2",c:"#3a6b39"},{t:"Strategy",c:"#2952a3"},{t:"Group Mentor",c:"#8a6a1a"},{t:"1:1 Kickoff",c:"#6b3db8"}]},
+      {label:"Wk 5–8",items:[{t:"Agentic Labs x2",c:"#3a6b39"},{t:"Consulting Session",c:"#6b3db8"},{t:"Group Mentor x2",c:"#8a6a1a"},{t:"1:1 Advisory",c:"#6b3db8"}]},
+      {label:"Wk 9–12",items:[{t:"Advanced Build x2",c:"#7a3090"},{t:"AI Governance Lab",c:"#c4412a"},{t:"Capstone Planning",c:"#7a3090"},{t:"1:1 Advisory x2",c:"#6b3db8"}]},
+      {label:"Wk 13–16",items:[{t:"Capstone Build x3",c:"#7a3090"},{t:"Transformation Blueprint",c:"#6b3db8"},{t:"Peer Board Review",c:"#3a6b39"},{t:"External Reviewer",c:"#c4412a"},{t:"Demo Day & Launch",c:"#7a3090"},{t:"1:1 Final Advisory",c:"#6b3db8"}]}
+    ],
+    projects:[
+      {n:"01",d:"AI Strategy Audit — assess AI readiness across an organization or domain"},
+      {n:"02",d:"Agentic Product Build — ship a working autonomous AI system"},
+      {n:"03",d:"AI Governance Framework — design a compliant, ethical AI policy"},
+      {n:"04",d:"Cross-Domain Capstone — industry-grade AI product reviewed by external experts"},
+      {n:"05",d:"AI Transformation Blueprint — personal or org-level 12-month AI execution plan"}
+    ],
+    mentorship:"Unlimited group mentor sessions, 6 structured 1:1 executive advisory sessions, consulting Q&A access, personal AI transformation coach assigned for capstone phase",
+    aiServices:[
+      "AI transformation blueprint — full 12-month organizational AI execution strategy",
+      "Executive AI advisory — dedicated strategic guidance sessions with senior practitioners",
+      "AI governance strategy — enterprise-grade policy design, risk frameworks, and compliance alignment",
+      "Agentic AI system design — enterprise-scale autonomous workflow architecture",
+      "AI readiness assessment — org-wide maturity mapping with actionable scoring",
+      "Team AI capability building — role design, hiring criteria, and training program structure",
+      "AI opportunity identification — business model analysis for AI-driven growth vectors"
+    ],
+    techRequired:"No coding required. This program is designed for strategic leadership. Participants need strong decision-making experience and executive or senior-level context. Comfort using AI tools in daily work is beneficial but not mandatory — the focus is vision, governance, and transformation leadership.",
+    tools:["OpenAI enterprise tools","Microsoft Copilot Enterprise","Claude Enterprise","Gemini for Workspace","Credo AI","Holistic AI","Zapier Enterprise","n8n enterprise"],
+    credentials:["InNova AI Certificate of Accomplishment","LinkedIn digital badge","Individualized letter of recommendation","Completed capstone project artifact"],
+    careerImpact:"Vanguard graduates are positioned as enterprise AI leaders and transformation architects. The executive certificate, LinkedIn verification, and high-stakes capstone with external review signal C-suite-level AI fluency — directly supporting board-level positioning, advisory mandates, consulting authority, and AI leadership roles across sectors."
+  }
+];
+
+const curriculum={
+  foundations:[
+    {title:"Generative AI & LLM Fundamentals",tools:"ChatGPT, Claude, Gemini, Llama",color:"#2952a3"},
+    {title:"Prompt Engineering (Advanced)",tools:"System prompts, chain-of-thought, few-shot, structured output",color:"#2952a3"},
+    {title:"Multimodal AI — Vision, Audio & Documents",tools:"GPT-4o, Gemini Vision, Whisper, Claude",color:"#2952a3"},
+    {title:"No-Code / Low-Code AI Tools",tools:"Zapier AI, Make.com, Notion AI, Gamma, v0.dev",color:"#2952a3"}
+  ],
+  applied:[
+    {title:"AI Productivity & Workflow Automation",tools:"n8n, Make, Zapier, Notion AI, Microsoft Copilot",color:"#3a6b39"},
+    {title:"AI-Powered Research & Analysis",tools:"Perplexity, NotebookLM, Claude, custom RAG pipelines",color:"#3a6b39"},
+    {title:"Industry-Specific AI Applications",tools:"Domain-mapped tools (healthcare, legal, finance, energy)",color:"#3a6b39"},
+    {title:"Building AI-Enhanced Products",tools:"Cursor, Replit, Bolt.new, Lovable, Vercel AI SDK",color:"#3a6b39"}
+  ],
+  agentic:[
+    {title:"Agentic AI Architecture & Design",tools:"LangChain, LangGraph, AutoGen, CrewAI",color:"#7a3090"},
+    {title:"Building Autonomous AI Workflows",tools:"n8n + AI nodes, custom agent loops, tool-calling APIs",color:"#7a3090"},
+    {title:"Memory, RAG & Knowledge Systems",tools:"Pinecone, Weaviate, LlamaIndex, Chroma",color:"#7a3090"},
+    {title:"Multi-Agent Coordination",tools:"CrewAI, AutoGen, OpenAI Assistants API",color:"#7a3090"}
+  ],
+  security:[
+    {title:"AI in Cybersecurity (Threat Detection)",tools:"Darktrace, Microsoft Sentinel AI, CrowdStrike Falcon AI",color:"#c4412a"},
+    {title:"AI Red-Teaming & Adversarial Testing",tools:"OWASP LLM Top 10, Garak, custom red-team frameworks",color:"#c4412a"},
+    {title:"AI Governance, Ethics & Compliance",tools:"NIST AI RMF, EU AI Act, ISO 42001",color:"#c4412a"},
+    {title:"Data Privacy & Responsible AI Deployment",tools:"PII detection, differential privacy, bias audits",color:"#c4412a"}
+  ],
+  strategy:[
+    {title:"AI Readiness Assessment & Roadmapping",tools:"Custom InNova AI assessment framework",color:"#b8933e"},
+    {title:"AI Strategy for Leaders",tools:"Business model mapping, AI opportunity identification",color:"#b8933e"},
+    {title:"Change Management for AI Adoption",tools:"Stakeholder frameworks, training program design",color:"#b8933e"},
+    {title:"Building AI Teams & Capabilities",tools:"Role design, hiring criteria, org AI maturity models",color:"#b8933e"}
+  ]
+};
+
+let activeTier=null;
+let activeCurriculum='foundations';
+
+function selectTier(idx){
+  document.querySelectorAll('.tier').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tier')[idx].classList.add('active');
+  activeTier=idx;
+  renderDetail(idx);
+}
+
+function renderDetail(idx){
+  const t=tiers[idx];
+  const area=document.getElementById('detailArea');
+  const weekRows=t.weekPlan.map(w=>`
+    <div class="week-row">
+      <div class="week-label">${w.label}</div>
+      <div class="week-items">${w.items.map(i=>`<span class="session-tag" style="color:${i.c};border-color:${i.c}22;background:${i.c}0d">${i.t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+  const projCards=t.projects.map(p=>`
+    <div class="proj-card">
+      <div class="proj-num">${p.n}</div>
+      <div class="proj-desc">${p.d}</div>
+    </div>
+  `).join('');
+  const feats=t.features.map(f=>`<div class="feat"><div class="feat-dot" style="--dot-color:${t.dot}"></div><span>${f}</span></div>`).join('');
+
+  const aiServiceItems = t.aiServices.map(s=>`<div class="feat"><div class="feat-dot" style="--dot-color:${t.dot}"></div><span>${s}</span></div>`).join('');
+  const toolPills = t.tools.map(tool=>`<span class="domain-pill" style="border-color:${t.color}33;color:${t.dot};background:${t.color}0a">${tool}</span>`).join('');
+  const credItems = t.credentials.map(c=>`<div class="feat"><div class="feat-dot" style="--dot-color:${t.dot}"></div><span>${c}</span></div>`).join('');
+
+  area.innerHTML=`
+    <div class="detail-panel active section" style="--active-color:${t.color}">
+      <div class="dp-header">
+        <div>
+          <span style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:${t.color}">${t.badge}</span>
+          <div class="dp-name">${t.name} Package</div>
+          <div style="font-size:.9rem;color:var(--ink2);max-width:560px;margin-top:.4rem">${t.desc}</div>
+        </div>
+        <div class="dp-price-block">
+          <div class="dp-price" style="color:${t.dot}">${t.price}</div>
+          <div class="dp-meta">${t.duration} · ${t.sessionsPerWeek} sessions/wk<br>Total: ${t.totalSessions} sessions</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:1.25rem">
+        <div class="info-block">
+          <div class="info-label">Target Audience</div>
+          <div class="info-val" style="font-size:.85rem">${t.audience}</div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Mentorship Model</div>
+          <div class="info-val" style="font-size:.85rem">${t.mentorship}</div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-bottom:.8rem">Package features</div>
+      <div class="features-grid">${feats}</div>
+
+      <div class="section-label" style="margin-top:1.5rem;margin-bottom:.8rem">Weekly session plan</div>
+      <div class="week-plan">${weekRows}</div>
+
+      <div class="section-label" style="margin-top:1.5rem;margin-bottom:.8rem">Projects & capstone</div>
+      <div class="projects-block">${projCards}</div>
+
+      <div class="section-label" style="margin-top:1.5rem;margin-bottom:.8rem">AI-enabled services included</div>
+      <div class="features-grid">${aiServiceItems}</div>
+
+      <div class="section-label" style="margin-top:1.5rem;margin-bottom:.8rem">Prior technical experience required</div>
+      <div class="info-block" style="margin-bottom:0">
+        <div class="info-val" style="font-size:.88rem;font-weight:400;color:var(--ink2)">${t.techRequired}</div>
+      </div>
+
+      <div class="section-label" style="margin-top:1.5rem;margin-bottom:.8rem">Tools, platforms & AI models</div>
+      <div class="domains">${toolPills}</div>
+
+      <div class="section-label" style="margin-top:1.5rem;margin-bottom:.8rem">Credential outcomes</div>
+      <div style="background:${t.color}08;border:1px solid ${t.color}22;border-radius:var(--r);padding:1rem 1.1rem">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:${t.dot};margin-bottom:.7rem">Participants receive</div>
+        <div class="features-grid">${credItems}</div>
+      </div>
+
+      <div class="section-label" style="margin-top:1.5rem;margin-bottom:.8rem">Career growth impact</div>
+      <div class="info-block" style="margin-bottom:0;border-left:3px solid ${t.color}">
+        <div class="info-val" style="font-size:.88rem;font-weight:400;color:var(--ink2)">${t.careerImpact}</div>
+      </div>
+
+      <div style="margin-top:1.5rem;text-align:center">
+        <button class="cta-btn" style="background:${t.color}" onclick="sendPrompt('Tell me more about the ${t.name} package of the InNova AI Apex Accelerator and how to enroll')">Inquire about ${t.name} ↗</button>
+      </div>
+    </div>
+  `;
+}
+
+function showCurriculum(key){
+  activeCurriculum=key;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  const mods=curriculum[key];
+  document.getElementById('curriculumContent').innerHTML=`
+    <div class="curriculum">
+      ${mods.map(m=>`
+        <div class="mod" style="--mod-color:${m.color}">
+          <div class="mod-title">${m.title}</div>
+          <div class="mod-tools">${m.tools}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+selectTier(1);
+showCurriculum('foundations');
+
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el=>{
+    el.classList.remove('open');
+    el.querySelector('.faq-q').setAttribute('aria-expanded','false');
+  });
+  if(!isOpen){
+    item.classList.add('open');
+    btn.setAttribute('aria-expanded','true');
+  }
+}
+
+function navTo(id, el){
+  const target=document.getElementById(id);
+  if(!target) return;
+  const navH=document.getElementById('siteNav').offsetHeight;
+  const top=target.getBoundingClientRect().top+window.scrollY-navH-12;
+  window.scrollTo({top,behavior:'smooth'});
+  document.querySelectorAll('.site-nav-link').forEach(l=>l.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
+
+// Scroll spy — highlight nav link matching visible section
+const _sections=[
+  {id:'homeSection',idx:0},
+  {id:'programsSection',idx:1},
+  {id:'scholarshipSection',idx:2},
+  {id:'faqSection',idx:3},
+  {id:'differentiatorSection',idx:4}
+];
+const _navLinks=document.querySelectorAll('.site-nav-link[onclick]');
+window.addEventListener('scroll',function(){
+  const navH=document.getElementById('siteNav').offsetHeight+20;
+  let current=0;
+  _sections.forEach(s=>{
+    const el=document.getElementById(s.id);
+    if(el && el.getBoundingClientRect().top<=navH) current=s.idx;
+  });
+  _navLinks.forEach((l,i)=>l.classList.toggle('active',i===current));
+},{passive:true});
+</script>
